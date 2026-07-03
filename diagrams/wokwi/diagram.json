@@ -1,0 +1,306 @@
+{
+    "version": 1,
+    "author": "Team Zero2One",
+    "editor": "wokwi",
+    "parts": [
+        {
+            "type": "board-esp32-devkit-c-v4",
+            "id": "esp",
+            "top": 60,
+            "left": 340,
+            "attrs": {}
+        },
+        {
+            "type": "wokwi-slide-switch",
+            "id": "sw1",
+            "top": 40,
+            "left": 60,
+            "attrs": {
+                "label": "Fan 1"
+            }
+        },
+        {
+            "type": "wokwi-slide-switch",
+            "id": "sw2",
+            "top": 120,
+            "left": 60,
+            "attrs": {
+                "label": "Fan 2"
+            }
+        },
+        {
+            "type": "wokwi-slide-switch",
+            "id": "sw3",
+            "top": 200,
+            "left": 60,
+            "attrs": {
+                "label": "Light 1"
+            }
+        },
+        {
+            "type": "wokwi-slide-switch",
+            "id": "sw4",
+            "top": 280,
+            "left": 60,
+            "attrs": {
+                "label": "Light 2"
+            }
+        },
+        {
+            "type": "wokwi-slide-switch",
+            "id": "sw5",
+            "top": 360,
+            "left": 60,
+            "attrs": {
+                "label": "Light 3"
+            }
+        },
+        {
+            "type": "wokwi-led",
+            "id": "led1",
+            "top": 40,
+            "left": 620,
+            "attrs": {
+                "color": "cyan",
+                "label": "Fan 1"
+            }
+        },
+        {
+            "type": "wokwi-led",
+            "id": "led2",
+            "top": 120,
+            "left": 620,
+            "attrs": {
+                "color": "cyan",
+                "label": "Fan 2"
+            }
+        },
+        {
+            "type": "wokwi-led",
+            "id": "led3",
+            "top": 200,
+            "left": 620,
+            "attrs": {
+                "color": "yellow",
+                "label": "Light 1"
+            }
+        },
+        {
+            "type": "wokwi-led",
+            "id": "led4",
+            "top": 280,
+            "left": 620,
+            "attrs": {
+                "color": "yellow",
+                "label": "Light 2"
+            }
+        },
+        {
+            "type": "wokwi-led",
+            "id": "led5",
+            "top": 360,
+            "left": 620,
+            "attrs": {
+                "color": "yellow",
+                "label": "Light 3"
+            }
+        },
+        {
+            "type": "wokwi-resistor",
+            "id": "r1",
+            "top": 60,
+            "left": 540,
+            "attrs": {
+                "value": "220"
+            }
+        },
+        {
+            "type": "wokwi-resistor",
+            "id": "r2",
+            "top": 140,
+            "left": 540,
+            "attrs": {
+                "value": "220"
+            }
+        },
+        {
+            "type": "wokwi-resistor",
+            "id": "r3",
+            "top": 220,
+            "left": 540,
+            "attrs": {
+                "value": "220"
+            }
+        },
+        {
+            "type": "wokwi-resistor",
+            "id": "r4",
+            "top": 300,
+            "left": 540,
+            "attrs": {
+                "value": "220"
+            }
+        },
+        {
+            "type": "wokwi-resistor",
+            "id": "r5",
+            "top": 380,
+            "left": 540,
+            "attrs": {
+                "value": "220"
+            }
+        }
+    ],
+    "connections": [
+        [
+            "sw1:2",
+            "esp:4",
+            "green",
+            []
+        ],
+        [
+            "sw2:2",
+            "esp:5",
+            "green",
+            []
+        ],
+        [
+            "sw3:2",
+            "esp:18",
+            "green",
+            []
+        ],
+        [
+            "sw4:2",
+            "esp:19",
+            "green",
+            []
+        ],
+        [
+            "sw5:2",
+            "esp:21",
+            "green",
+            []
+        ],
+        [
+            "sw1:1",
+            "esp:GND.1",
+            "black",
+            []
+        ],
+        [
+            "sw2:1",
+            "esp:GND.1",
+            "black",
+            []
+        ],
+        [
+            "sw3:1",
+            "esp:GND.1",
+            "black",
+            []
+        ],
+        [
+            "sw4:1",
+            "esp:GND.1",
+            "black",
+            []
+        ],
+        [
+            "sw5:1",
+            "esp:GND.1",
+            "black",
+            []
+        ],
+        [
+            "esp:12",
+            "r1:1",
+            "cyan",
+            []
+        ],
+        [
+            "esp:13",
+            "r2:1",
+            "cyan",
+            []
+        ],
+        [
+            "esp:14",
+            "r3:1",
+            "gold",
+            []
+        ],
+        [
+            "esp:25",
+            "r4:1",
+            "gold",
+            []
+        ],
+        [
+            "esp:26",
+            "r5:1",
+            "gold",
+            []
+        ],
+        [
+            "r1:2",
+            "led1:A",
+            "cyan",
+            []
+        ],
+        [
+            "r2:2",
+            "led2:A",
+            "cyan",
+            []
+        ],
+        [
+            "r3:2",
+            "led3:A",
+            "gold",
+            []
+        ],
+        [
+            "r4:2",
+            "led4:A",
+            "gold",
+            []
+        ],
+        [
+            "r5:2",
+            "led5:A",
+            "gold",
+            []
+        ],
+        [
+            "led1:C",
+            "esp:GND.2",
+            "black",
+            []
+        ],
+        [
+            "led2:C",
+            "esp:GND.2",
+            "black",
+            []
+        ],
+        [
+            "led3:C",
+            "esp:GND.2",
+            "black",
+            []
+        ],
+        [
+            "led4:C",
+            "esp:GND.2",
+            "black",
+            []
+        ],
+        [
+            "led5:C",
+            "esp:GND.2",
+            "black",
+            []
+        ]
+    ]
+}
