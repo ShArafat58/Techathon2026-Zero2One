@@ -56,7 +56,7 @@ const genAI = process.env.GEMINI_API_KEY ? new GoogleGenerativeAI(process.env.GE
 async function humanize(facts, fallbackText, userQuestion) {
     if (!genAI) return fallbackText;
     try {
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
         const prompt = `You are OfficeWatch, a friendly office energy-monitor bot on Discord.
 Answer the user's question using ONLY this live data (do not invent numbers):
 ${JSON.stringify(facts)}
@@ -121,8 +121,23 @@ function startBot() {
         }
     });
 
+    async function announceAlerts(alerts) {
+        const channelId = process.env.DISCORD_ALERT_CHANNEL_ID;
+        if (!channelId || !alerts?.length) return;
+        try {
+            const channel = await client.channels.fetch(channelId);
+            for (const a of alerts) {
+                const line = `⚠️ **${a.message}** — ${new Date(a.triggeredAt).toLocaleTimeString()}`;
+                await channel.send(line);
+            }
+        } catch (err) {
+            console.error("[bot] proactive alert failed:", err.message);
+        }
+    }
+
     client.login(process.env.DISCORD_TOKEN);
-    return client;
+    return { client, announceAlerts };
+
 }
 
 module.exports = { startBot };

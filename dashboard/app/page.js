@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import FloorPlan from "./components/FloorPlan";
 
 const API = "http://localhost:4000";
 
@@ -57,6 +58,8 @@ export default function Dashboard() {
           </p>
         </section>
       </header>
+
+      <FloorPlan devices={devices} />
 
       <div className="grid gap-4 md:grid-cols-3">
         {rooms.map((room) => {

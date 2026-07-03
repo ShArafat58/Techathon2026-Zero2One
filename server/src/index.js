@@ -35,19 +35,26 @@ io.on("connection", (socket) => {
     socket.emit("snapshot", buildSnapshot());
 });
 
+const bot = startBot();
+
+function handleFiredAlerts(fired) {
+    if (fired.length > 0 && bot?.announceAlerts) bot.announceAlerts(fired);
+}
+
 simulator.start(() => {
-    alertEngine.checkRules();
+    handleFiredAlerts(alertEngine.checkRules());
     broadcastSnapshot();
 });
 
 setInterval(() => {
     const fired = alertEngine.checkRules();
-    if (fired.length > 0) broadcastSnapshot();
+    if (fired.length > 0) {
+        handleFiredAlerts(fired);
+        broadcastSnapshot();
+    }
 }, 30_000);
 
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
     console.log(`[server] API + Socket.io on http://localhost:${PORT}`);
 });
-
-startBot();
