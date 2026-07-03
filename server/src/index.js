@@ -7,6 +7,7 @@ const { Server } = require("socket.io");
 const routes = require("./api/routes");
 const simulator = require("./simulator/simulator");
 const store = require("./state/store");
+const alertEngine = require("./alerts/engine");
 
 const app = express();
 app.use(cors()); // dashboard runs on :3000, API on :4000
@@ -35,7 +36,17 @@ io.on("connection", (socket) => {
     });
 });
 
-simulator.start(() => broadcastSnapshot());
+// Simulator drives the world; alert rules run on every change
+simulator.start(() => {
+    alertEngine.checkRules();
+    broadcastSnapshot();
+});
+
+// Alerts can also trigger without a device change (e.g. the 2h threshold crossing)
+setInterval(() => {
+    const fired = alertEngine.checkRules();
+    if (fired.length > 0) broadcastSnapshot();
+}, 30_000);
 
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
