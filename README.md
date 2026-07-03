@@ -25,8 +25,11 @@ One Node.js process owns the truth. A simulator plays the role of real
 hardware, an in-memory store holds device state, and both interfaces — the
 Next.js dashboard and the Discord bot — read from that same store. They can
 never disagree.
-[Simulated Device Layer] → [In-Memory Store] → [REST API + Socket.io] → [Dashboard]
-└────────── (in-process read) ────→ [Discord Bot] → Gemini
+
+**Data flow:**
+
+    [Simulated Device Layer] → [In-Memory Store] → [REST API + Socket.io] → [Dashboard]
+                                       └───────── (in-process read) ─────→ [Discord Bot] → Gemini
 
 ![System Diagram](diagrams/system-diagram.png)
 
@@ -62,7 +65,10 @@ No physical hardware in this round. The device layer is an honest simulation:
   (2 fans + 3 lights) via `INPUT_PULLUP` switch taps (stand-ins for
   relay/optocoupler sensing), mirrors each on a status LED through 220Ω
   resistors, and prints the exact JSON payload our backend uses.
-  Live simulation: **[Wokwi project](WOKWI_LINK_এখানে)** · files in [`diagrams/wokwi/`](diagrams/wokwi/)
+  Live simulation: **[Wokwi project](WOKWI_LINK)** · files in [`diagrams/wokwi/`](diagrams/wokwi/)
+
+  ![Wokwi Circuit](diagrams/wokwi-circuit.png)
+
 - **Simulator:** office-hours-aware behaviour (busy 9–5, occasional
   "forgotten" devices after hours), 5s tick, per-device wattage, kWh
   integration by time-sampling. The payload shape is identical to the ESP32's
@@ -114,9 +120,18 @@ View Channels, Send Messages, Read Message History.
 Socket.io event `snapshot` pushes `{devices, usage, alerts}` on every change.
 
 ## Project Structure
-server/     src/state (store) · src/simulator · src/alerts · src/api · src/bot
-dashboard/  Next.js app — page.js + components/FloorPlan.js
-diagrams/   system-diagram (drawio+png) · wokwi/ (diagram.json, sketch.ino) · screenshots
+
+    server/     src/state (store) · src/simulator · src/alerts · src/api · src/bot
+    dashboard/  Next.js app — page.js + components/FloorPlan.js
+    diagrams/   system-diagram (drawio+png) · wokwi/ (diagram.json, sketch.ino) · screenshots
+
+## Scalability Notes
+
+The in-memory store fits this problem's fixed 15-device scope and guarantees
+dashboard/bot consistency by construction. For a larger deployment the producer
+side swaps cleanly: real ESP32 nodes publish over MQTT/HTTP into the same store
+interface, and the store can be backed by Redis/PostgreSQL without touching the
+API, socket layer, bot, or UI.
 
 ## Attributions
 
